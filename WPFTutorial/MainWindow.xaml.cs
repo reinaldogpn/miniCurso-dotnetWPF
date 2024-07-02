@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using WinForms = System.Windows.Forms;
+﻿using System.Collections;
+using System.Windows;
 
 namespace WPFTutorial
 {
@@ -8,22 +8,41 @@ namespace WPFTutorial
         public MainWindow()
         {
             InitializeComponent();
+
+            lvEntries.Items.Add("a");
+            lvEntries.Items.Add("b");
+            lvEntries.Items.Add("c");
         }
 
-        private void btnFire_Click(object sender, RoutedEventArgs e)
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            dialog.InitialDirectory = "C:\\Users\\Reinaldo\\source\\repos\\miniCurso-dotnetWPF\\WPFTutorial";
-            WinForms.DialogResult result = dialog.ShowDialog();
+            if (!string.IsNullOrEmpty(txtEntry.Text))
+            {
+                lvEntries.Items.Add(txtEntry.Text);
+            }
 
-            if(result == WinForms.DialogResult.OK)
+            txtEntry.Clear();
+            txtEntry.Focus();
+        }
+
+        private void btnDel_Click(object sender, RoutedEventArgs e)
+        {
+            var items = lvEntries.SelectedItems;
+
+            var result = MessageBox.Show($"Are you sure you want to delete {items.Count} items?", "Sure?", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
             {
-                string folder = dialog.SelectedPath;
+                var itemsList = new ArrayList(items);
+                foreach (var item in itemsList)
+                {
+                    lvEntries.Items.Remove(item);
+                }
             }
-            else
-            {
-                // no directory selected
-            }
+        }
+
+        private void btnClr_Click(object sender, RoutedEventArgs e)
+        {
+            lvEntries.Items.Clear();
         }
     }
 }
