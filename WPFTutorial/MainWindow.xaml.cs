@@ -1,5 +1,5 @@
-﻿using Microsoft.Win32;
-using System.Windows;
+﻿using System.Windows;
+using WinForms = System.Windows.Forms;
 
 namespace WPFTutorial
 {
@@ -12,30 +12,17 @@ namespace WPFTutorial
 
         private void btnFire_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "C# Source Files | *.cs";
-            fileDialog.InitialDirectory = "C:\\Users\\Reinaldo\\source\\repos\\miniCurso-dotnetWPF\\WPFTutorial";
-            fileDialog.Title = "Please, pick CS source file(s)...";
-            fileDialog.Multiselect = true;
-            
-            bool? success = fileDialog.ShowDialog();
-            
-            if (success == true)
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.InitialDirectory = "C:\\Users\\Reinaldo\\source\\repos\\miniCurso-dotnetWPF\\WPFTutorial";
+            WinForms.DialogResult result = dialog.ShowDialog();
+
+            if(result == WinForms.DialogResult.OK)
             {
-                string[] paths = fileDialog.FileNames;
-                string[] fileNames = fileDialog.SafeFileNames;
-                string unifiedFileNames = "";
-
-                foreach (string fileName in fileNames)
-                {
-                    unifiedFileNames += fileName + " | ";
-                }
-
-                tbInfo.Text = unifiedFileNames;
+                string folder = dialog.SelectedPath;
             }
             else
             {
-                tbInfo.Text = "No file selected";
+                // no directory selected
             }
         }
     }
