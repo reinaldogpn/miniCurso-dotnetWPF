@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Microsoft.Win32;
 using System.Windows;
 
 namespace WPFTutorial
@@ -13,17 +12,30 @@ namespace WPFTutorial
 
         private void btnFire_Click(object sender, RoutedEventArgs e)
         {
-            // MessageBox.Show("An error ocurred.", "ERROR!", MessageBoxButton.OK, MessageBoxImage.Error);
-            MessageBoxResult result = MessageBox.Show("Do you agree?", "Agreement", 
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "C# Source Files | *.cs";
+            fileDialog.InitialDirectory = "C:\\Users\\Reinaldo\\source\\repos\\miniCurso-dotnetWPF\\WPFTutorial";
+            fileDialog.Title = "Please, pick CS source file(s)...";
+            fileDialog.Multiselect = true;
+            
+            bool? success = fileDialog.ShowDialog();
+            
+            if (success == true)
             {
-                tbInfo.Text = "Agreed.";
+                string[] paths = fileDialog.FileNames;
+                string[] fileNames = fileDialog.SafeFileNames;
+                string unifiedFileNames = "";
+
+                foreach (string fileName in fileNames)
+                {
+                    unifiedFileNames += fileName + " | ";
+                }
+
+                tbInfo.Text = unifiedFileNames;
             }
             else
             {
-                tbInfo.Text = "Not agreed.";
+                tbInfo.Text = "No file selected";
             }
         }
     }
