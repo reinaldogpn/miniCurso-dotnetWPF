@@ -4,37 +4,27 @@ using System.Windows;
 
 namespace WPFTutorial
 {
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        public bool IsRunning { get; set; } = true;
         public MainWindow()
         {
-            DataContext = this;
             InitializeComponent();
         }
 
-        private string boundText;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public string BoundText
+        private void btnFire_Click(object sender, RoutedEventArgs e)
         {
-            get { return boundText; }
-            set
+            // MessageBox.Show("An error ocurred.", "ERROR!", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBoxResult result = MessageBox.Show("Do you agree?", "Agreement", 
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
             {
-                boundText = value;
-                OnPropertyChanged();
+                tbInfo.Text = "Agreed.";
             }
-        }
-
-        private void btnSet_Click(object sender, RoutedEventArgs e)
-        {
-            BoundText = "set from code";
-        }
-
-        private void OnPropertyChanged( [CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            else
+            {
+                tbInfo.Text = "Not agreed.";
+            }
         }
     }
 }
